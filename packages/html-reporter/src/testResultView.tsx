@@ -27,7 +27,7 @@ import { ImageDiffView } from '@web/shared/imageDiffView';
 import { TestErrorView, TestScreenshotErrorView } from './testErrorView';
 import './testResultView.css';
 
-function groupImageDiffs(screenshots: Set<TestAttachment>): ImageDiff[] {
+export function groupImageDiffs(screenshots: Set<TestAttachment>): ImageDiff[] {
   const snapshotNameToImageDiff = new Map<string, ImageDiff>();
   for (const attachment of screenshots) {
     const match = attachment.name.match(/^(.*)-(expected|actual|diff|previous)(\.[^.]+)?$/);
