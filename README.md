@@ -11,6 +11,11 @@ When rendering a lot of textual data on many separate pages (e. g. the digital e
 To check the comparison result playwright provides a handy *ImageDiffView* which can be accessed when navigating to the detail view of a test. 
 
 In this experimental fork the *ImageDiffView* has been integrated into the *TestFileView* to see multiple 'diffs' at once which is very helpful when dealing with the described data by giving immediate visual feedback on the 'severeness' of the differences. An example (based on the structure of existing ones) has been added to the example directory.
+![playwright_html_reporter_list_view](https://github.com/user-attachments/assets/91b72d94-54b1-4406-b52c-8781935a6386)
+![playwright_html_reporter_list_view_imagediff](https://github.com/user-attachments/assets/d363a14c-f13d-45f9-b652-d504d8939d25)
+
+
+
 
 ---
 
