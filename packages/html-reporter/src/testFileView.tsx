@@ -17,13 +17,15 @@
 import type { TestCaseSummary, TestFileSummary } from './types';
 import * as React from 'react';
 import { hashStringToInt, msToString } from './utils';
-import { Chip } from './chip';
+import { AutoChip, Chip } from './chip';
 import { filterWithToken } from './filter';
-import { generateTraceUrl, Link, navigate, ProjectLink, SearchParamsContext } from './links';
+import { generateTraceUrl, Anchor, Link, navigate, ProjectLink, SearchParamsContext } from './links';
 import { statusIcon } from './statusIcon';
 import './testFileView.css';
 import { video, image, trace } from './icons';
 import { clsx } from '@web/uiUtils';
+import { ImageDiffView } from '@web/shared/imageDiffView';
+import { groupImageDiffs } from './testResultView';
 
 export const TestFileView: React.FC<React.PropsWithChildren<{
   file: TestFileSummary;
@@ -66,6 +68,9 @@ export const TestFileView: React.FC<React.PropsWithChildren<{
           {videoBadge(test)}
           {traceBadge(test)}
         </div>
+        <div>
+          {imageDiff(test)}
+        </div>
       </div>
     )}
   </Chip>;
@@ -86,6 +91,26 @@ function videoBadge(test: TestCaseSummary): JSX.Element | undefined {
 function traceBadge(test: TestCaseSummary): JSX.Element | undefined {
   const firstTraces = test.results.map(result => result.attachments.filter(attachment => attachment.name === 'trace')).filter(traces => traces.length > 0)[0];
   return firstTraces ? <Link href={generateTraceUrl(firstTraces)} title='View trace' className='test-file-badge'>{trace()}</Link> : undefined;
+}
+
+function imageDiff(test: TestCaseSummary): JSX.Element | undefined {
+  const resultWithImageDiff = test.results.find(result => result.attachments.some(attachment => {
+    return attachment.contentType.startsWith('image/') && !!attachment.name.match(/-(expected|actual|diff)/);
+  }));
+  if (resultWithImageDiff) {
+    const screenshots = new Set(resultWithImageDiff.attachments.filter(a => a.contentType.startsWith('image/')));
+    const diffs = groupImageDiffs(screenshots);
+    return (
+      <>
+        {diffs.map((diff, index) =>
+          <Anchor key={`diff-${index}`} id={`diff-${index}`}>
+            <AutoChip dataTestId='test-results-image-diff' header={`Image mismatch: ${diff.name}`} revealOnAnchorId={`diff-${index}`}>
+              <ImageDiffView diff={diff} />
+            </AutoChip>
+          </Anchor>)}
+      </>
+    );
+  }
 }
 
 const LabelsClickView: React.FC<React.PropsWithChildren<{
