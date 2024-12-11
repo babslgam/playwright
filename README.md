@@ -2,9 +2,17 @@
 
 This repository is a fork of [Microsoft Playwright](https://github.com/microsoft/playwright).
 
-# Purpose of this fork
+# Use case / purpose of changes in this fork
 
 Experimental integration of the ImageDiffView component into the list view of the html reporter.
+
+When rendering a lot of textual data on many separate pages (e. g. the digital edition of a book) playwrights screenshot comparison feature has proven to decrease time needed for development, refactoring and proofreading as well as helping to spot differences that would have been hard to notice with the naked eye.
+
+To check the comparison result playwright provides a handy *ImageDiffView* which can be accessed when navigating to the detail view of a test. 
+
+In this experimental fork the *ImageDiffView* has been integrated into the *TestFileView* to see multiple 'diffs' at once which is very helpful when dealing with the described data by giving immediate visual feedback on the 'severeness' of the differences. An example (based on the structure of existing ones) has been added to the example directory.
+
+---
 
 # 🎭 Playwright
 
